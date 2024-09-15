@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 10, 2024 at 10:46 PM
+-- Generation Time: Sep 15, 2024 at 08:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -18,8 +18,9 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `test`
+-- Database: `pulse`
 --
+
 -- --------------------------------------------------------
 
 --
@@ -93,6 +94,30 @@ INSERT INTO `genres` (`genre_id`, `genre_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `navbar_items`
+--
+
+CREATE TABLE `navbar_items` (
+  `id` int(11) NOT NULL,
+  `label` varchar(255) NOT NULL,
+  `link` varchar(255) NOT NULL,
+  `icon` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `navbar_items`
+--
+
+INSERT INTO `navbar_items` (`id`, `label`, `link`, `icon`) VALUES
+(1, 'Discover', 'player.php', 'play_circle_outline'),
+(2, 'Browse', 'browse.html', 'sort'),
+(3, 'Trending', 'chart.html', 'trending_up'),
+(4, 'Artist', 'artist.html', 'portrait'),
+(5, 'Search', '#search-modal', 'search');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `songs`
 --
 
@@ -141,6 +166,51 @@ INSERT INTO `songs` (`song_id`, `song_name`, `image_path`, `artist_id`, `genre_i
 (29, 'Phir Milenge Chalte Chalte', 'images/songs/Phir Milenge Chalte Chalte.jpeg', 6, 5, 6),
 (30, 'Dance Pe Chance', 'images/songs/Dance Pe Chance.jpeg', 6, 3, 6);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `profile_pic` varchar(255) DEFAULT 'images/default_profile_pic.jpg',
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `email`, `profile_pic`, `password`) VALUES
+(1, 'John Doe', 'john@example.com', 'images/john.jpg', 'qwerty'),
+(2, 'Rachel Platten', 'rachel@example.com', 'images/rachel.jpg', 'qwerty'),
+(3, 'Mark Smith', 'mark@example.com', 'images/mark.jpg', 'qwerty'),
+(4, 'Emily Stone', 'emily@example.com', 'images/emily.jpg', 'qwerty'),
+(5, 'Guest User', 'guest@example.com', 'images/default_profile_pic.jpg', 'qwerty');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `website_settings`
+--
+
+CREATE TABLE `website_settings` (
+  `id` int(11) NOT NULL,
+  `site_name` varchar(255) NOT NULL,
+  `logo_url` varchar(255) NOT NULL,
+  `name` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `website_settings`
+--
+
+INSERT INTO `website_settings` (`id`, `site_name`, `logo_url`, `name`) VALUES
+(1, 'pulse - Music, Audio and Radio', 'images/logo.png', 'pulse');
+
 --
 -- Indexes for dumped tables
 --
@@ -165,6 +235,12 @@ ALTER TABLE `genres`
   ADD PRIMARY KEY (`genre_id`);
 
 --
+-- Indexes for table `navbar_items`
+--
+ALTER TABLE `navbar_items`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `songs`
 --
 ALTER TABLE `songs`
@@ -172,6 +248,19 @@ ALTER TABLE `songs`
   ADD KEY `artist_id` (`artist_id`),
   ADD KEY `genre_id` (`genre_id`),
   ADD KEY `album_id` (`album_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `website_settings`
+--
+ALTER TABLE `website_settings`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -196,10 +285,28 @@ ALTER TABLE `genres`
   MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `navbar_items`
+--
+ALTER TABLE `navbar_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT for table `songs`
 --
 ALTER TABLE `songs`
   MODIFY `song_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `website_settings`
+--
+ALTER TABLE `website_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
