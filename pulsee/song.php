@@ -1,5 +1,5 @@
 <?php
-include 'config.php'; 
+include 'config.php';
 
 $genre = isset($_GET['genre']) ? $_GET['genre'] : 'all';
 
@@ -27,12 +27,12 @@ if ($result->num_rows > 0) {
         <div class="col-xs-4 col-sm-4 col-md-3">
             <div class="item r">
                 <div class="item-media">
-                    <a href="track.detail.html" class="item-media-content" style="background-image: url(' . $row['image_path'] . ')"></a>
+                    <a href="track.detail.html" class="item-media-content" style="background-image: url(' . htmlspecialchars($row['image_path']) . ')"></a>
                     <div class="item-overlay center"><button class="btn-playpause">Play</button></div>
                 </div>
                 <div class="item-info">
-                    <div class="item-title text-ellipsis"><a href="track.detail.html">' . $row['song_name'] . '</a></div>
-                    <div class="item-author text-sm text-ellipsis"><a href="artist.detail.html" class="text-muted">' . $row['artist_name'] . '</a></div>
+                    <div class="item-title text-ellipsis"><a href="track.detail.html">' . htmlspecialchars($row['song_name']) . '</a></div>
+                    <div class="item-author text-sm text-ellipsis"><a href="artist.detail.html" class="text-muted">' . htmlspecialchars($row['artist_name']) . '</a></div>
                 </div>
             </div>
         </div>';

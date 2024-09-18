@@ -1,3 +1,6 @@
+<?php
+include('usercheck.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

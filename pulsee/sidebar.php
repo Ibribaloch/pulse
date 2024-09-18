@@ -107,7 +107,7 @@ $conn->close();
                     <a class="dropdown-item" href="profile.html#likes">Likes</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="docs.html">Need help?</a>
-                    <a class="dropdown-item" href="signin.html">Sign out</a>
+                    <a class="dropdown-item" href="signout.php">Sign out</a>
                 </div>
             </div>
         </div>

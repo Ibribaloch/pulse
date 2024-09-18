@@ -1,3 +1,6 @@
+<?php
+include('usercheck.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -193,22 +196,32 @@
   </div>
   <script src="scripts/app.min.js"></script>
   <script>
-  // Function to fetch songs by genre
-  function fetchSongsByGenre(genre) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', `fetch_songs.php?genre=${genre}`, true);
-    xhr.onload = function () {
-      if (this.status === 200) {
-        document.getElementById('songContainer').innerHTML = this.responseText;
-      }
-    };
-    xhr.send();
-  }
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to load songs based on genre
+    function loadSongs(genre) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'song.php?genre=' + encodeURIComponent(genre), true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById('songContainer').innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send();
+    }
 
-  // Fetch all songs initially
-  window.onload = function () {
-    fetchSongsByGenre('all');
-  };
+    // Add event listener to genre dropdown items
+    document.querySelectorAll('#genreDropdown .dropdown-item').forEach(function(item) {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            var genre = this.getAttribute('data-genre');
+            loadSongs(genre);
+            document.querySelector('#genreDropdown .dropdown-item.active').classList.remove('active');
+            this.classList.add('active');
+            document.querySelector('.btn.dropdown-toggle').textContent = this.textContent;
+        });
+    });
+});
 </script>
+
 </body>
 </html>
