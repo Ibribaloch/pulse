@@ -18,24 +18,42 @@ if ($genre != 'all') {
     $stmt->bind_param("s", $genre);
 }
 
-$stmt->execute();
+if (!$stmt->execute()) {
+    echo "Error executing query: " . $stmt->error;
+    exit;
+}
+
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        echo '
+
+        $song_name = htmlspecialchars($row['song_name']);
+        $image_path = htmlspecialchars($row['image_path']);
+        $artist_name = htmlspecialchars($row['artist_name']);
+        
+        ?>
         <div class="col-xs-4 col-sm-4 col-md-3">
             <div class="item r">
                 <div class="item-media">
-                    <a href="track.detail.html" class="item-media-content" style="background-image: url(' . htmlspecialchars($row['image_path']) . ')"></a>
-                    <div class="item-overlay center"><button class="btn-playpause">Play</button></div>
+                    <a href="track.detail.html" class="item-media-content" 
+                       style="background-image: url('<?php echo $image_path; ?>')">
+                    </a>
+                    <div class="item-overlay center">
+                        <button class="btn-playpause">Play</button>
+                    </div>
                 </div>
                 <div class="item-info">
-                    <div class="item-title text-ellipsis"><a href="track.detail.html">' . htmlspecialchars($row['song_name']) . '</a></div>
-                    <div class="item-author text-sm text-ellipsis"><a href="artist.detail.html" class="text-muted">' . htmlspecialchars($row['artist_name']) . '</a></div>
+                    <div class="item-title text-ellipsis">
+                        <a href="track.detail.html"><?php echo $song_name; ?></a>
+                    </div>
+                    <div class="item-author text-sm text-ellipsis">
+                        <a href="artist.detail.html" class="text-muted"><?php echo $artist_name; ?></a>
+                    </div>
                 </div>
             </div>
-        </div>';
+        </div>
+        <?php
     }
 } else {
     echo '<p>No songs found for this genre.</p>';

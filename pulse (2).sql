@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 15, 2024 at 08:41 PM
+-- Generation Time: Sep 22, 2024 at 09:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -94,6 +94,33 @@ INSERT INTO `genres` (`genre_id`, `genre_name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `liked_songs`
+--
+
+CREATE TABLE `liked_songs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `song_id` int(11) NOT NULL,
+  `liked_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `liked_songs`
+--
+
+INSERT INTO `liked_songs` (`id`, `user_id`, `song_id`, `liked_at`) VALUES
+(1, 1, 2, '2024-09-22 19:21:19'),
+(2, 1, 3, '2024-09-22 19:21:19'),
+(3, 2, 1, '2024-09-22 19:21:19'),
+(4, 2, 4, '2024-09-22 19:21:19'),
+(5, 3, 5, '2024-09-22 19:21:19'),
+(6, 3, 6, '2024-09-22 19:21:19'),
+(7, 4, 7, '2024-09-22 19:21:19'),
+(8, 4, 8, '2024-09-22 19:21:19');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `navbar_items`
 --
 
@@ -110,8 +137,8 @@ CREATE TABLE `navbar_items` (
 
 INSERT INTO `navbar_items` (`id`, `label`, `link`, `icon`) VALUES
 (1, 'Discover', 'player.php', 'play_circle_outline'),
-(2, 'Browse', 'browse.html', 'sort'),
-(3, 'Trending', 'chart.html', 'trending_up'),
+(2, 'Browse', 'browse.php', 'sort'),
+(3, 'Trending', 'chart.php', 'trending_up'),
 (4, 'Artist', 'artist.html', 'portrait'),
 (5, 'Search', '#search-modal', 'search');
 
@@ -127,44 +154,46 @@ CREATE TABLE `songs` (
   `image_path` varchar(255) NOT NULL,
   `artist_id` int(11) DEFAULT NULL,
   `genre_id` int(11) DEFAULT NULL,
-  `album_id` int(11) DEFAULT NULL
+  `album_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `views` int(11) DEFAULT 0,
+  `likes` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `songs`
 --
 
-INSERT INTO `songs` (`song_id`, `song_name`, `image_path`, `artist_id`, `genre_id`, `album_id`) VALUES
-(1, 'Tum Hi Ho', 'images/songs/Tum_Hi_Ho_cover.jpeg', 1, 1, 1),
-(2, 'Chahun Main Ya Naa', 'images/songs/Chahun Main Ya Naa.jpeg', 1, 1, 1),
-(3, 'Milne Hai Mujhse Aayi', 'images/songs/Milne Hai Mujhse Aayi.jpeg', 1, 1, 1),
-(4, 'Meri Aashiqui', 'images/songs/Meri Aashiqui.jpeg', 1, 1, 1),
-(5, 'Piya Aaye Na', 'images/songs/Piya Aaye Na.jpeg', 1, 1, 1),
-(6, 'Jiya Jale', 'images/songs/Jiya Jale.jpeg', 2, 2, 2),
-(7, 'Satrangi Re', 'images/songs/Satrangi Re.jpeg', 2, 2, 2),
-(8, 'Dil Se Re', 'images/songs/Dil Se Re.jpeg', 2, 2, 2),
-(9, 'Ae Ajnabi', 'images/songs/Ae Ajnabi.jpeg', 2, 2, 2),
-(10, 'Chaiyya Chaiyya', 'images/songs/Chaiyya Chaiyya.jpeg', 2, 3, 2),
-(11, 'Kuch To Hua Hai', 'images/songs/Kuch To Hua Hai.jpeg', 3, 4, 3),
-(12, 'Pretty Woman', 'images/songs/Pretty Woman.jpeg', 3, 4, 3),
-(13, 'Mahi Ve', 'images/songs/Mahi Ve.jpeg', 3, 1, 3),
-(14, 'It\'s The Time to Disco', 'images/songs/It\'s The Time to Disco.jpeg', 3, 3, 3),
-(15, 'Kal Ho Naa Ho', 'images/songs/Kal Ho Naa Ho.jpeg', 3, 4, 3),
-(16, 'Kabira', 'images/songs/Kabira.jpeg', 4, 5, 4),
-(17, 'Dilliwaali Girlfriend', 'images/songs/Dilliwaali Girlfriend.jpeg', 4, 4, 4),
-(18, 'Balam Pichkari', 'images/songs/Balam Pichkari.jpeg', 4, 4, 4),
-(19, 'Ilahi', 'images/songs/Ilahi.jpeg', 4, 4, 4),
-(20, 'Badtameez Dil', 'images/songs/Badtameez Dil.jpeg', 4, 4, 4),
-(21, 'Lat Lag Gayee', 'images/songs/Lat Lag Gayee.jpeg', 5, 1, 5),
-(22, 'Party on My Mind', 'images/songs/Party on My Mind.jpeg', 5, 3, 5),
-(23, 'Allah Duhai Hai', 'images/songs/Allah Duhai Hai.jpeg', 5, 4, 5),
-(24, 'Be Intehaan', 'images/songs/Be Intehaan.jpeg', 5, 6, 5),
-(25, 'Race Saanson Ki', 'images/songs/Race Saanson Ki.jpeg', 5, 4, 5),
-(26, 'Phir Le Aya Dil', 'images/songs/Phir Le Aya Dil.jpeg', 1, 2, NULL),
-(27, 'Tujh Mein Rab Dikhta Hai', 'images/songs/Tujh Mein Rab Dikhta Hai.jpeg', 6, 1, 6),
-(28, 'Haule Haule', 'images/songs/Haule Haule.jpeg', 6, 4, 6),
-(29, 'Phir Milenge Chalte Chalte', 'images/songs/Phir Milenge Chalte Chalte.jpeg', 6, 5, 6),
-(30, 'Dance Pe Chance', 'images/songs/Dance Pe Chance.jpeg', 6, 3, 6);
+INSERT INTO `songs` (`song_id`, `song_name`, `image_path`, `artist_id`, `genre_id`, `album_id`, `created_at`, `views`, `likes`) VALUES
+(1, 'Tum Hi Ho', 'images/songs/Tum_Hi_Ho_cover.jpeg', 1, 1, 1, '2024-09-22 12:24:03', 2, 1),
+(2, 'Chahun Main Ya Naa', 'images/songs/Chahun Main Ya Naa.jpeg', 1, 1, 1, '2024-09-22 12:24:03', 2, 1),
+(3, 'Milne Hai Mujhse Aayi', 'images/songs/Milne Hai Mujhse Aayi.jpeg', 1, 1, 1, '2024-09-22 12:24:03', 2, 1),
+(4, 'Meri Aashiqui', 'images/songs/Meri Aashiqui.jpeg', 1, 1, 1, '2024-09-22 12:24:03', 3, 1),
+(5, 'Piya Aaye Na', 'images/songs/Piya Aaye Na.jpeg', 1, 1, 1, '2024-09-22 12:24:03', 1, 1),
+(6, 'Jiya Jale', 'images/songs/Jiya Jale.jpeg', 2, 2, 2, '2024-09-22 12:24:03', 1, 1),
+(7, 'Satrangi Re', 'images/songs/Satrangi Re.jpeg', 2, 2, 2, '2024-09-22 12:24:03', 1, 1),
+(8, 'Dil Se Re', 'images/songs/Dil Se Re.jpeg', 2, 2, 2, '2024-09-22 12:24:03', 1, 1),
+(9, 'Ae Ajnabi', 'images/songs/Ae Ajnabi.jpeg', 2, 2, 2, '2024-09-22 12:24:03', 2, 0),
+(10, 'Chaiyya Chaiyya', 'images/songs/Chaiyya Chaiyya.jpeg', 2, 3, 2, '2024-09-22 12:24:03', 0, 0),
+(11, 'Kuch To Hua Hai', 'images/songs/Kuch To Hua Hai.jpeg', 3, 4, 3, '2024-09-22 12:24:03', 0, 0),
+(12, 'Pretty Woman', 'images/songs/Pretty Woman.jpeg', 3, 4, 3, '2024-09-22 12:24:03', 0, 0),
+(13, 'Mahi Ve', 'images/songs/Mahi Ve.jpeg', 3, 1, 3, '2024-09-22 12:24:03', 0, 0),
+(15, 'Kal Ho Naa Ho', 'images/songs/Kal Ho Naa Ho.jpeg', 3, 4, 3, '2024-09-22 12:24:03', 0, 0),
+(16, 'Kabira', 'images/songs/Kabira.jpeg', 4, 5, 4, '2024-09-22 12:24:03', 0, 0),
+(17, 'Dilliwaali Girlfriend', 'images/songs/Dilliwaali Girlfriend.jpeg', 4, 4, 4, '2024-09-22 12:24:03', 0, 0),
+(18, 'Balam Pichkari', 'images/songs/Balam Pichkari.jpeg', 4, 4, 4, '2024-09-22 12:24:03', 0, 0),
+(19, 'Ilahi', 'images/songs/Ilahi.jpeg', 4, 4, 4, '2024-09-22 12:24:03', 0, 0),
+(20, 'Badtameez Dil', 'images/songs/Badtameez Dil.jpeg', 4, 4, 4, '2024-09-22 12:24:03', 0, 0),
+(21, 'Lat Lag Gayee', 'images/songs/Lat Lag Gayee.jpeg', 5, 1, 5, '2024-09-22 12:24:03', 0, 0),
+(22, 'Party on My Mind', 'images/songs/Party on My Mind.jpeg', 5, 3, 5, '2024-09-22 12:24:03', 0, 0),
+(23, 'Allah Duhai Hai', 'images/songs/Allah Duhai Hai.jpeg', 5, 4, 5, '2024-09-22 12:24:03', 0, 0),
+(24, 'Be Intehaan', 'images/songs/Be Intehaan.jpeg', 5, 6, 5, '2024-09-22 12:24:03', 0, 0),
+(25, 'Race Saanson Ki', 'images/songs/Race Saanson Ki.jpeg', 5, 4, 5, '2024-09-22 12:24:03', 0, 0),
+(26, 'Phir Le Aya Dil', 'images/songs/Phir Le Aya Dil.jpeg', 1, 2, NULL, '2024-09-22 12:24:03', 0, 0),
+(27, 'Tujh Mein Rab Dikhta Hai', 'images/songs/Tujh Mein Rab Dikhta Hai.jpeg', 6, 1, 6, '2024-09-22 12:24:03', 0, 0),
+(28, 'Haule Haule', 'images/songs/Haule Haule.jpeg', 6, 4, 6, '2024-09-22 12:24:03', 0, 0),
+(29, 'Phir Milenge Chalte Chalte', 'images/songs/Phir Milenge Chalte Chalte.jpeg', 6, 5, 6, '2024-09-22 12:24:03', 0, 0),
+(30, 'Dance Pe Chance', 'images/songs/Dance Pe Chance.jpeg', 6, 3, 6, '2024-09-22 12:24:03', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -188,8 +217,42 @@ INSERT INTO `users` (`id`, `name`, `email`, `profile_pic`, `password`) VALUES
 (1, 'John Doe', 'john@example.com', 'images/john.jpg', 'qwerty'),
 (2, 'Rachel Platten', 'rachel@example.com', 'images/rachel.jpg', 'qwerty'),
 (3, 'Mark Smith', 'mark@example.com', 'images/mark.jpg', 'qwerty'),
-(4, 'Emily Stone', 'emily@example.com', 'images/emily.jpg', 'qwerty'),
-(5, 'Guest User', 'guest@example.com', 'images/default_profile_pic.jpg', 'qwerty');
+(4, 'Emily Stone', 'emily@example.com', 'images/emily.jpg', 'qwerty');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `viewed_songs`
+--
+
+CREATE TABLE `viewed_songs` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `song_id` int(11) DEFAULT NULL,
+  `viewed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `viewed_songs`
+--
+
+INSERT INTO `viewed_songs` (`id`, `user_id`, `song_id`, `viewed_at`) VALUES
+(1, 1, 30, '2024-09-22 13:45:48'),
+(2, 1, 4, '2024-09-22 13:46:55'),
+(3, 1, 1, '2024-09-10 05:00:00'),
+(4, 1, 2, '2024-09-10 05:30:00'),
+(5, 2, 1, '2024-09-10 06:00:00'),
+(6, 2, 3, '2024-09-10 06:30:00'),
+(7, 3, 2, '2024-09-10 07:00:00'),
+(8, 1, 3, '2024-09-11 04:00:00'),
+(9, 1, 4, '2024-09-11 04:30:00'),
+(10, 3, 4, '2024-09-11 05:00:00'),
+(11, 2, 5, '2024-09-11 05:30:00'),
+(12, 3, 6, '2024-09-11 06:00:00'),
+(13, 2, 7, '2024-09-11 06:30:00'),
+(14, 3, 8, '2024-09-11 07:00:00'),
+(15, 1, 9, '2024-09-11 07:30:00'),
+(16, 2, 9, '2024-09-10 20:00:00');
 
 -- --------------------------------------------------------
 
@@ -235,6 +298,14 @@ ALTER TABLE `genres`
   ADD PRIMARY KEY (`genre_id`);
 
 --
+-- Indexes for table `liked_songs`
+--
+ALTER TABLE `liked_songs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `song_id` (`song_id`);
+
+--
 -- Indexes for table `navbar_items`
 --
 ALTER TABLE `navbar_items`
@@ -255,6 +326,14 @@ ALTER TABLE `songs`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
+
+--
+-- Indexes for table `viewed_songs`
+--
+ALTER TABLE `viewed_songs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `song_id` (`song_id`);
 
 --
 -- Indexes for table `website_settings`
@@ -285,6 +364,12 @@ ALTER TABLE `genres`
   MODIFY `genre_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `liked_songs`
+--
+ALTER TABLE `liked_songs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT for table `navbar_items`
 --
 ALTER TABLE `navbar_items`
@@ -303,6 +388,12 @@ ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `viewed_songs`
+--
+ALTER TABLE `viewed_songs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT for table `website_settings`
 --
 ALTER TABLE `website_settings`
@@ -319,12 +410,26 @@ ALTER TABLE `albums`
   ADD CONSTRAINT `albums_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`artist_id`);
 
 --
+-- Constraints for table `liked_songs`
+--
+ALTER TABLE `liked_songs`
+  ADD CONSTRAINT `liked_songs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `liked_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`song_id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `songs`
 --
 ALTER TABLE `songs`
   ADD CONSTRAINT `songs_ibfk_1` FOREIGN KEY (`artist_id`) REFERENCES `artists` (`artist_id`),
   ADD CONSTRAINT `songs_ibfk_2` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`genre_id`),
   ADD CONSTRAINT `songs_ibfk_3` FOREIGN KEY (`album_id`) REFERENCES `albums` (`album_id`);
+
+--
+-- Constraints for table `viewed_songs`
+--
+ALTER TABLE `viewed_songs`
+  ADD CONSTRAINT `viewed_songs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `viewed_songs_ibfk_2` FOREIGN KEY (`song_id`) REFERENCES `songs` (`song_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
