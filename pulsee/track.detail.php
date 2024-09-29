@@ -1,70 +1,83 @@
 <?php
-session_start();
 include('config.php');
+include('usercheck.php');
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    header("Location: signin.php");
-    exit();
+include('trackview.php');
+
+// Fetch the song details and display
+$song_query = "SELECT * FROM songs WHERE song_id = ?";
+$song_stmt = $conn->prepare($song_query);
+$song_stmt->bind_param("i", $song_id);
+$song_stmt->execute();
+$song_result = $song_stmt->get_result();
+$song = $song_result->fetch_assoc();
+
+// Get the song_id from the URL
+if (isset($_GET['song_id'])) {
+    $song_id = $_GET['song_id'];
+
+    // Query to get the song details and artist's name
+    $sql = "SELECT s.song_name, s.image_path, s.audio_path, s.views, s.likes, g.genre_name, a.artist_name, a.artist_id
+            FROM songs s
+            LEFT JOIN genres g ON s.genre_id = g.genre_id
+            LEFT JOIN artists a ON s.artist_id = a.artist_id
+            WHERE s.song_id = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("i", $song_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $song = $result->fetch_assoc();
+            $artist_id = $song['artist_id'];
+
+            // Query to count the number of songs by the artist
+            $count_sql = "SELECT COUNT(*) as song_count FROM songs WHERE artist_id = ?";
+            $count_stmt = $conn->prepare($count_sql);
+            $count_stmt->bind_param("i", $artist_id);
+            $count_stmt->execute();
+            $count_result = $count_stmt->get_result();
+            $song_count = $count_result->fetch_assoc()['song_count'];
+        }
+    }
 }
 
-// Fetch user info
-$user_id = $_SESSION['user_id'];
-$sql = "SELECT name, profile_pic FROM users WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-    $user_name = $row['name'];
-    $user_profile_pic = $row['profile_pic'];
-} else {
-    $user_name = 'Guest';
-    $user_profile_pic = 'images/default_profile_pic.jpg';
-}
-
-$stmt->close();
-
-// Get the song_id from the query string
-$song_id = $_GET['song_id'];
-
-// Check if the song has already been viewed by this user
-$check_query = "SELECT * FROM viewed_songs WHERE user_id = ? AND song_id = ?";
-$check_stmt = $conn->prepare($check_query);
-$check_stmt->bind_param("ii", $user_id, $song_id);
-$check_stmt->execute();
-$check_result = $check_stmt->get_result();
-
-if ($check_result->num_rows == 0) {
-    // If not viewed yet, insert into the viewed_songs table
-    $insert_query = "INSERT INTO viewed_songs (user_id, song_id) VALUES (?, ?)";
-    $insert_stmt = $conn->prepare($insert_query);
-    $insert_stmt->bind_param("ii", $user_id, $song_id);
-    $insert_stmt->execute();
-    $insert_stmt->close();
-}
-
-// // Fetch the song details and display
-// $song_query = "SELECT * FROM songs WHERE song_id = ?";
-// $song_stmt = $conn->prepare($song_query);
-// $song_stmt->bind_param("i", $song_id);
-// $song_stmt->execute();
-// $song_result = $song_stmt->get_result();
-// $song = $song_result->fetch_assoc();
-
-// echo "<h1>" . htmlspecialchars($song['song_name']) . "</h1>";
-// // Add more details about the song as needed
-
-// $song_stmt->close();
+$song_stmt->close();
 $conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <?php include('header.php'); ?>
+<?php
+include('config.php');
+$sql = "SELECT * FROM website_settings";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  $row = $result->fetch_assoc();
+  $siteName = $row["site_name"];
+  $logoUrl = $row["logo_url"];
+} 
+$conn->close();
+?>
+<meta charset="utf-8">
+  <title><?php echo $song['song_name']; ?> - Pulse</title>
+  <meta name="description" content="Music, Musician, Bootstrap">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimal-ui">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-barstyle" content="black-translucent">
+  <link rel="apple-touch-icon" href="<?php echo $logoUrl; ?>">
+  <meta name="apple-mobile-web-app-title" content="Flatkit">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="shortcut icon" sizes="196x196" href="<?php echo $logoUrl; ?>">
+  <link rel="stylesheet" href="css/animate.css/animate.min.css" type="text/css">
+  <link rel="stylesheet" href="css/glyphicons/glyphicons.css" type="text/css">
+  <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="css/material-design-icons/material-design-icons.css" type="text/css">
+  <link rel="stylesheet" href="css/bootstrap/dist/css/bootstrap.min.css" type="text/css">
+  <link rel="stylesheet" href="css/styles/app.min.css">
 </head>
 <body>
     <div class="app dk" id="app">
@@ -72,23 +85,6 @@ $conn->close();
             <?php include('sidebar.php'); ?>
         </div>
         <div id="content" class="app-content white bg box-shadow-z2" role="main">
-            <div class="app-header hidden-lg-up white lt box-shadow-z1">
-                <div class="navbar"><a href="index.html" class="navbar-brand md"><svg xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 48 48" width="32" height="32">
-                            <circle cx="24" cy="24" r="24" fill="rgba(255,255,255,0.2)" />
-                            <circle cx="24" cy="24" r="22" fill="#1c202b" class="brand-color" />
-                            <circle cx="24" cy="24" r="10" fill="#ffffff" />
-                            <circle cx="13" cy="13" r="2" fill="#ffffff" class="brand-animate" />
-                            <path d="M 14 24 L 24 24 L 14 44 Z" fill="#FFFFFF" />
-                            <circle cx="24" cy="24" r="3" fill="#000000" />
-                        </svg> <img src="images/logo.png" alt="." class="hide"> <span
-                            class="hidden-folded inline">pulse</span></a>
-                    <ul class="nav navbar-nav pull-right">
-                        <li class="nav-item"><a data-toggle="modal" data-target="#aside" class="nav-link"><i
-                                    class="material-icons">menu</i></a></li>
-                    </ul>
-                </div>
-            </div>
             <div class="app-footer app-player grey bg">
                 <?php include('footer.php'); ?>
             </div>
@@ -98,49 +94,14 @@ $conn->close();
                 </div>
                 <div class="page-content">
                     <div class="padding b-b">
-                        <div class="row-col">
-                            <div class="col-sm w w-auto-xs m-b">
-                                <div class="item w r">
-                                    <div class="item-media">
-                                        <div class="item-media-content" style="background-image: url('images/b0.jpg')">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm">
-                                <div class="p-l-md no-padding-xs">
-                                    <div class="page-title">
-                                        <h1 class="inline">Simple Place To Be</h1>
-                                    </div>
-                                    <p class="item-desc text-ellipsis text-muted" data-ui-toggle-class="text-ellipsis">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quamquam tu hanc
-                                        copiosiorem etiam soles dicere. Nihil illinc huc pervenit. Verum hoc idem saepe
-                                        faciamus. Quid ad utilitatem tantae pecuniae? Utram tandem linguam nescio? Sed
-                                        hoc sane concedamus.</p>
-                                    <div class="item-action m-b"><a
-                                            class="btn btn-icon white rounded btn-share pull-right" data-toggle="modal"
-                                            data-target="#share-modal"><i class="fa fa-share-alt"></i></a> <button
-                                            class="btn-playpause text-primary m-r-sm"></button> <span
-                                            class="text-muted">2356</span> <a
-                                            class="btn btn-icon rounded btn-favorite"><i class="fa fa-heart-o"></i></a>
-                                        <span class="text-muted">232</span>
-                                        <div class="inline dropdown m-l-xs"><a class="btn btn-icon rounded btn-more"
-                                                data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a>
-                                            <div class="dropdown-menu pull-right black lt"></div>
-                                        </div>
-                                    </div>
-                                    <div class="item-meta"><a class="btn btn-xs rounded white">Pop</a> <a
-                                            class="btn btn-xs rounded white">Happy</a></div>
-                                </div>
-                            </div>
-                        </div>
+                        <?php include('trackinfo.php'); ?>
                     </div>
                     <div class="row-col">
                         <div class="col-lg-9 b-r no-border-md">
                             <div class="padding">
                                 <h6 class="m-b"><span class="text-muted">by</span> <a href="artist.detail.html"
-                                        data-pjax class="item-author _600">Rachel Platten</a> <span
-                                        class="text-muted text-sm">- 10 song, 50 min 32 sec</span></h6>
+                                        data-pjax class="item-author _600"><?php echo htmlspecialchars($song['artist_name']); ?></a> <span
+                                        class="text-muted text-sm">- <?php echo $song_count; ?> Songs</span></h6>
                                 <div id="tracks" class="row item-list item-list-xs item-list-li m-b">
                                     <div class="col-xs-12">
                                         <div class="item r" data-id="item-10"
@@ -515,72 +476,7 @@ $conn->close();
                                 </div>
                                 <h5 class="m-b">Comments</h5>
                                 <div class="streamline m-b m-l">
-                                    <div class="sl-item">
-                                        <div class="sl-left"><img src="images/a0.jpg" alt="." class="img-circle"></div>
-                                        <div class="sl-content">
-                                            <div class="sl-author m-b-0"><a href="#">Peter Joo</a> <span
-                                                    class="sl-date text-muted">2 minutes ago</span></div>
-                                            <div>
-                                                <p>Check your Internet connection</p>
-                                            </div>
-                                            <div class="sl-footer"><a href="#" data-toggle="collapse"
-                                                    data-target="#reply-1"><i
-                                                        class="fa fa-fw fa-mail-reply text-muted"></i> Reply</a></div>
-                                            <div class="box collapse m-a-0 b-a" id="reply-1">
-                                                <form><textarea class="form-control no-border" rows="3"
-                                                        placeholder="Type something..."></textarea></form>
-                                                <div class="box-footer clearfix"><button
-                                                        class="btn btn-info pull-right btn-sm">Post</button>
-                                                    <ul class="nav nav-pills nav-sm">
-                                                        <li class="nav-item"><a class="nav-link" href="#"><i
-                                                                    class="fa fa-camera text-muted"></i></a></li>
-                                                        <li class="nav-item"><a class="nav-link" href="#"><i
-                                                                    class="fa fa-video-camera text-muted"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-left"><img src="images/a2.jpg" alt="." class="img-circle"></div>
-                                        <div class="sl-content">
-                                            <div class="sl-author m-b-0"><a href="#">Moke</a> <span
-                                                    class="sl-date text-muted">8:30</span></div>
-                                            <div>
-                                                <p>Call to customer <a href="#" class="text-primary">Jacob</a> and
-                                                    discuss the detail.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="sl-item">
-                                        <div class="sl-left"><img src="images/a3.jpg" alt="." class="img-circle"></div>
-                                        <div class="sl-content">
-                                            <div class="sl-author m-b-0"><a href="#">Moke</a> <span
-                                                    class="sl-date text-muted">Sat, 5 Mar</span></div>
-                                            <blockquote>
-                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-                                                    posuere erat a ante soe aiea ose dos soois.</p><small>Someone famous
-                                                    in <cite title="Source Title">Source Title</cite></small>
-                                            </blockquote>
-                                            <div class="sl-item">
-                                                <div class="sl-left"><img src="images/a2.jpg" alt="."
-                                                        class="img-circle"></div>
-                                                <div class="sl-content">
-                                                    <div class="sl-date text-muted">Sun, 11 Feb</div>
-                                                    <p><a href="#" class="text-primary">Jessi</a> assign you a task <a
-                                                            href="#" class="text-primary">Mockup Design</a>.</p>
-                                                </div>
-                                            </div>
-                                            <div class="sl-item">
-                                                <div class="sl-left"><img src="images/a5.jpg" alt="."
-                                                        class="img-circle"></div>
-                                                <div class="sl-content">
-                                                    <div class="sl-date text-muted">Thu, 17 Jan</div>
-                                                    <p>Follow up to close deal</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <?php include('comments.php'); ?>
                                 </div>
                                 <h5 class="m-t-lg m-b">Leave a comment</h5>
                                 <form>
@@ -605,7 +501,6 @@ $conn->close();
         <div id="switcher">
             <?php include('switcher.php'); ?>   
         </div>
-        <?php include('search.php'); ?>
     </div>
     <script src="scripts/app.min.js"></script>
 </body>

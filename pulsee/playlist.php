@@ -1,85 +1,101 @@
 <?php
-// Start session
-session_start();
-
-// Database connection
-$servername = "localhost";
-$username = "root";  // Change this if your database username is different
-$password = "";      // Add your MySQL password if required
-$dbname = "pulse";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include('config.php');
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: signin.php"); // Redirect to the login page if not logged in
     exit();
 }
-// Get playlist ID from URL
-if (!isset($_GET['playlist_id'])) {
-    die("No playlist ID provided.");
-}
 
-$playlist_id = intval($_GET['playlist_id']);
-
-// Fetch playlist details
-$stmt = $conn->prepare("SELECT playlist_name FROM playlists WHERE playlist_id = ?");
-$stmt->bind_param("i", $playlist_id);
-$stmt->execute();
-$stmt->bind_result($playlist_name);
-$stmt->fetch();
-$stmt->close();
-
-// Fetch songs in the playlist
-$stmt = $conn->prepare("
-    SELECT s.song_name
-    FROM playlist_songs ps
-    JOIN songs s ON ps.song_id = s.song_id
-    WHERE ps.playlist_id = ?
-");
-$stmt->bind_param("i", $playlist_id);
+// Fetch user information
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT name, profile_pic FROM users WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
-$songs = [];
-while ($row = $result->fetch_assoc()) {
-    $songs[] = $row['song_name'];
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $user_name = $row['name'];
+    $user_profile_pic = $row['profile_pic'];
+} else {
+    $user_name = 'Guest';
+    $user_profile_pic = 'images/default_profile_pic.jpg';
 }
+
 $stmt->close();
+// Fetch playlists for the logged-in user
+$sql = "SELECT * FROM playlists WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$playlists = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+$conn->close();
 ?>
+    <div class="container">
+        <div class="row">
+            <!-- Display existing playlists -->
+            <?php if ($playlists): ?>
+                <?php foreach ($playlists as $playlist): ?>
+                    <div class="col-xs-4 col-sm-4 col-md-3">
+                        <div class="item r">
+                            <div class="item-media">
+                                <a href="playlist_detail.php?id=<?= $playlist['id'] ?>" class="item-media-content"
+                                   style="background-image: url('<?= htmlspecialchars($playlist['cover_image']) ?>')">
+                                </a>
+                            </div>
+                            <div class="item-info">
+                                <div class="item-title text-ellipsis">
+                                    <a href="playlist_detail.php?id=<?= $playlist['id'] ?>"><?= htmlspecialchars($playlist['name']) ?></a>
+                                </div>
+                                <div class="item-meta text-sm text-muted">
+                                    <span>Created on: <?= date('Y-m-d', strtotime($playlist['created_at'])) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No playlists found for this user.</p>
+            <?php endif; ?>
+        </div>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($playlist_name); ?></title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .playlist-container { width: 80%; margin: 20px auto; }
-        .playlist-container h1 { text-align: center; }
-        .songs { margin-top: 20px; }
-    </style>
-</head>
-<body>
-
-<div class="playlist-container">
-    <h1><?php echo htmlspecialchars($playlist_name); ?></h1>
-
-    <div class="songs">
-        <h2>Songs</h2>
-        <ul>
-            <?php foreach ($songs as $song): ?>
-                <li><?php echo htmlspecialchars($song); ?></li>
-            <?php endforeach; ?>
-        </ul>
+        <!-- Add new playlist button -->
+        <div class="col-xs-4 col-sm-4 col-md-3">
+            <div class="item r">
+                <div class="item-media">
+                    <a href="#" id="add-playlist-button" class="item-media-content" 
+                       style="background-image: url('images/plus_icon.png'); background-size: cover;">
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-</body>
-</html>
+    <!-- Script to handle adding a new playlist -->
+    <script>
+        document.getElementById('add-playlist-button').addEventListener('click', function() {
+            var playlistName = prompt("Enter playlist name:");
+            if (playlistName) {
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "add_playlist.php", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            alert('Playlist created successfully');
+                            location.reload(); // Reload the page to see the new playlist
+                        } else {
+                            alert(response.message);
+                        }
+                    }
+                };
+                xhr.send("name=" + encodeURIComponent(playlistName));
+            }
+        });
+    </script>
+

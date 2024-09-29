@@ -1,224 +1,156 @@
-<div class="modal white lt fade" id="search-modal" data-backdrop="false">
-			<a data-dismiss="modal" class="text-muted text-lg p-x modal-close-btn">
-				&times;</a>
-			<div class="row-col">
-				<div class="p-a-lg h-v row-cell v-m">
-					<div class="row">
-						<div class="col-md-8 offset-md-2">
-							<form action="https://flatfull.com/themes/pulse/search.html" class="m-b-md">
-								<div class="input-group input-group-lg">
-									<input type="text" class="form-control" placeholder="Type keyword"
-										data-ui-toggle-class="hide" data-ui-target="#search-result">
-									<span class="input-group-btn">
-										<button class="btn b-a no-shadow white" type="submit">
-											Search</button>
-									</span>
-								</div>
-							</form>
-							<div id="search-result" class="animated fadeIn">
-								<p class="m-b-md">
-									<strong>
-										23</strong>
-									<span class="text-muted">
-										Results found for:</span>
-									<strong>
-										Keyword</strong>
-								</p>
-								<div class="row">
-									<div class="col-sm-6">
-										<div class="row item-list item-list-sm item-list-by m-b">
-											<div class="col-xs-12">
-												<div class="item r" data-id="item-12"
-													data-src="http://api.soundcloud.com/tracks/174495152/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
-													<div class="item-media">
-														<a href="track.detail.html" class="item-media-content"
-															style="background-image: url('images/b11.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="track.detail.html">
-																Happy ending</a>
-														</div>
-														<div class="item-author text-sm text-ellipsis">
-															<a href="artist.detail.html" class="text-muted">
-																Postiljonen</a>
-														</div>
-														<div class="item-meta text-sm text-muted">
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-xs-12">
-												<div class="item r" data-id="item-8"
-													data-src="http://api.soundcloud.com/tracks/236288744/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
-													<div class="item-media">
-														<a href="track.detail.html" class="item-media-content"
-															style="background-image: url('images/b7.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="track.detail.html">
-																Simple Place To Be</a>
-														</div>
-														<div class="item-author text-sm text-ellipsis">
-															<a href="artist.detail.html" class="text-muted">
-																RYD</a>
-														</div>
-														<div class="item-meta text-sm text-muted">
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-xs-12">
-												<div class="item r" data-id="item-7"
-													data-src="http://api.soundcloud.com/tracks/245566366/stream?client_id=a10d44d431ad52868f1bce6d36f5234c">
-													<div class="item-media">
-														<a href="track.detail.html" class="item-media-content"
-															style="background-image: url('images/b6.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="track.detail.html">
-																Reflection (Deluxe)</a>
-														</div>
-														<div class="item-author text-sm text-ellipsis">
-															<a href="artist.detail.html" class="text-muted">
-																Fifth Harmony</a>
-														</div>
-														<div class="item-meta text-sm text-muted">
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-xs-12">
-												<div class="item r" data-id="item-5"
-													data-src="http://streaming.radionomy.com/JamendoLounge">
-													<div class="item-media">
-														<a href="track.detail.html" class="item-media-content"
-															style="background-image: url('images/b4.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="track.detail.html">
-																Live Radio</a>
-														</div>
-														<div class="item-author text-sm text-ellipsis">
-															<a href="artist.detail.html" class="text-muted">
-																Radionomy</a>
-														</div>
-														<div class="item-meta text-sm text-muted">
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<div class="row item-list item-list-sm item-list-by m-b">
-											<div class="col-xs-12">
-												<div class="item">
-													<div class="item-media rounded">
-														<a href="artist.detail.html" class="item-media-content"
-															style="background-image: url('images/a5.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="artist.detail.html">
-																Judy Woods</a>
-															<div class="text-sm text-muted">
-																23 songs</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-xs-12">
-												<div class="item">
-													<div class="item-media rounded">
-														<a href="artist.detail.html" class="item-media-content"
-															style="background-image: url('images/a4.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="artist.detail.html">
-																Judith Garcia</a>
-															<div class="text-sm text-muted">
-																13 songs</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-xs-12">
-												<div class="item">
-													<div class="item-media rounded">
-														<a href="artist.detail.html" class="item-media-content"
-															style="background-image: url('images/a3.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="artist.detail.html">
-																Joe Holmes</a>
-															<div class="text-sm text-muted">
-																24 songs</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="col-xs-12">
-												<div class="item">
-													<div class="item-media rounded">
-														<a href="artist.detail.html" class="item-media-content"
-															style="background-image: url('images/a8.jpg')">
-														</a>
-													</div>
-													<div class="item-info">
-														<div class="item-title text-ellipsis">
-															<a href="artist.detail.html">
-																Sara King</a>
-															<div class="text-sm text-muted">
-																14 songs</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div id="top-search" class="btn-groups">
-								<strong class="text-muted">
-									Top searches:</strong>
-								<a href="#" class="btn btn-xs white">
-									Happy</a>
-								<a href="#" class="btn btn-xs white">
-									Music</a>
-								<a href="#" class="btn btn-xs white">
-									Weekend</a>
-								<a href="#" class="btn btn-xs white">
-									Summer</a>
-								<a href="#" class="btn btn-xs white">
-									Holiday</a>
-								<a href="#" class="btn btn-xs white">
-									Blue</a>
-								<a href="#" class="btn btn-xs white">
-									Soul</a>
-								<a href="#" class="btn btn-xs white">
-									Calm</a>
-								<a href="#" class="btn btn-xs white">
-									Nice</a>
-								<a href="#" class="btn btn-xs white">
-									Home</a>
-								<a href="#" class="btn btn-xs white">
-									SLeep</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+<?php include('usercheck.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <?php include('header.php'); ?>
+</head>
+
+<body>
+    <div class="app dk" id="app">
+        <?php include('sidebar.php'); ?>
+        <div id="content" class="app-content white bg box-shadow-z2" role="main">
+            <div class="app-footer app-player grey bg">
+                <?php include ('footer.php'); ?>
+            </div>
+            <div class="app-body" id="view">
+                <div class="padding">
+                    <!-- Search Form -->
+                    <form action="" method="GET" class="m-b-md">
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control" name="query" 
+                                   placeholder="Type keyword" value="<?php echo isset($_GET['query']) ? $_GET['query'] : ''; ?>">
+                            <span class="input-group-btn">
+                                <button class="btn b-a no-shadow white" type="submit">Search</button>
+                            </span>
+                        </div>
+                    </form>
+                    
+                    <!-- Search Results Heading -->
+                    <?php
+                    if (isset($_GET['query']) && !empty($_GET['query'])) {
+                        $search = $_GET['query'];
+                        echo '<p class="m-b-md"><strong>Search Results for: </strong>' . htmlspecialchars($search) . '</p>';
+                        
+                        // Include the config file to establish the connection
+                        include('config.php');
+
+                        // Ensure connection is still valid before running the query
+                        if (!$conn || $conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
+                        }
+
+                        // Pagination variables
+                        $limit = 10; // Number of results per page
+                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page number
+                        $offset = ($page - 1) * $limit; // Calculate the offset for the query
+
+                        // Count total results for pagination
+                        $countQuery = "
+                            SELECT COUNT(*) as total 
+                            FROM songs
+                            JOIN artists ON songs.artist_id = artists.artist_id
+                            JOIN genres ON songs.genre_id = genres.genre_id
+                            JOIN albums ON songs.album_id = albums.album_id
+                            WHERE songs.song_name LIKE '%$search%' 
+                            OR artists.artist_name LIKE '%$search%' 
+                            OR genres.genre_name LIKE '%$search%' 
+                            OR albums.album_name LIKE '%$search%'
+                        ";
+
+                        $countResult = $conn->query($countQuery);
+                        $totalResults = $countResult->fetch_assoc()['total'];
+                        $totalPages = ceil($totalResults / $limit);
+
+                        // SQL query to fetch the results with LIMIT and OFFSET
+                        $searchQuery = "
+                            SELECT songs.song_id, songs.song_name, songs.image_path, songs.audio_path, songs.views, songs.likes, 
+                                   artists.artist_name, genres.genre_name, albums.album_name
+                            FROM songs
+                            JOIN artists ON songs.artist_id = artists.artist_id
+                            JOIN genres ON songs.genre_id = genres.genre_id
+                            JOIN albums ON songs.album_id = albums.album_id
+                            WHERE songs.song_name LIKE '%$search%' 
+                            OR artists.artist_name LIKE '%$search%' 
+                            OR genres.genre_name LIKE '%$search%' 
+                            OR albums.album_name LIKE '%$search%'
+                            LIMIT $limit OFFSET $offset
+                        ";
+
+                        // Run the query and check for results
+                        if ($result = $conn->query($searchQuery)) {
+                            if ($result->num_rows > 0) {
+                                echo '<div class="m-y"><div class="row item-list item-list-lg item-list-by m-b">';
+                                // Displaying search results as cards
+                                while ($row = $result->fetch_assoc()) {
+                                    echo '<div class="col-xs-12">
+                                            <div class="item r" data-id="item-'.$row['song_id'].'"
+                                                data-src="'.$row['audio_path'].'">
+                                                <div class="item-media">
+                                                    <a href="track.detail.html" class="item-media-content"
+                                                        style="background-image: url(\''.$row['image_path'].'\');"></a>
+                                                    <div class="item-overlay center">
+                                                        <button class="btn-playpause">Play</button>
+                                                    </div>
+                                                </div>
+                                                <div class="item-info">
+                                                    <div class="item-overlay bottom text-right">
+                                                        <a href="#" class="btn-favorite"><i class="fa fa-heart-o"></i></a> 
+                                                        <a href="#" class="btn-more" data-toggle="dropdown">
+                                                            <i class="fa fa-ellipsis-h"></i></a>
+                                                        <div class="dropdown-menu pull-right black lt"></div>
+                                                    </div>
+                                                    <div class="item-title text-ellipsis">
+                                                        <a href="track.detail.html">'.$row['song_name'].'</a>
+                                                    </div>
+                                                    <div class="item-author text-sm text-ellipsis">
+                                                        <a href="artist.detail.html" class="text-muted">'.$row['artist_name'].'</a>
+                                                    </div>
+                                                    <div class="item-meta text-sm text-muted">
+                                                        Album: '.$row['album_name'].' | Genre: '.$row['genre_name'].' | Views: '.$row['views'].' | Likes: '.$row['likes'].'
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          </div>';
+                                }
+                                echo '</div></div>';
+
+                                // Display pagination
+                                echo '<nav aria-label="Page navigation">';
+                                echo '<ul class="pagination">';
+                                for ($i = 1; $i <= $totalPages; $i++) {
+                                    echo '<li class="page-item '.($i == $page ? 'active' : '').'">
+                                            <a class="page-link" href="?query='.urlencode($search).'&page='.$i.'">'.$i.'</a>
+                                          </li>';
+                                }
+                                echo '</ul>';
+                                echo '</nav>';
+                            } else {
+                                echo '<p>No results found for "<strong>' . htmlspecialchars($search) . '</strong>"</p>';
+                                ?>
+                                <div class="row item-list item-list-md m-b">
+                                    <?php include 'recommand.php';?>
+                                </div>
+                                <?php
+                            }                      
+                        } else {
+                            echo 'Error executing query: ' . $conn->error;
+                        }
+
+                        // Close the result set
+                        $result->close();
+
+                    } else {
+                        // If no search has been made, show the recommended section
+                        include('recommand.php');
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        <div id="switcher">
+            <?php include('switcher.php'); ?>
+        </div>
+    </div>
+    <script src="scripts/app.min.js"></script>
+</body>
+</html>

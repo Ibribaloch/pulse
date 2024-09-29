@@ -42,7 +42,6 @@ include('usercheck.php');
     <div id="switcher">
       <?php include('switcher.php'); ?>
     </div>
-    <?php include('search.php'); ?>
   </div>
   <script src="scripts/app.min.js"></script>
 </body>

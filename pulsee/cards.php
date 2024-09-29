@@ -6,7 +6,7 @@ $query = "SELECT song_id, song_name, image_path, artist_id
           FROM songs 
           ORDER BY RAND() 
           LIMIT 4";
-$result = $conn->query($query);
+$result = $conn->query($query);     
 ?>
 
 <div class="row">
@@ -19,7 +19,7 @@ $result = $conn->query($query);
                        style="background-image: url('<?php echo $row['image_path']; ?>')">
                     </a>
                     <div class="item-overlay center">
-                        <button class="btn-playpause">Play</button>
+                        <button class="btn-playpause" onclick="playSong('<?php echo $audio_path; ?>', '<?php echo $song_name; ?>', '<?php echo $artist_name; ?>', '<?php echo $image_path; ?>')">Play</button>
                     </div>
                 </div>
                 <div class="item-info">
@@ -43,4 +43,5 @@ $result = $conn->query($query);
         </div>
     <?php endwhile; ?>
 </div>
+
 

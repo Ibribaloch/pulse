@@ -25,9 +25,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         <div class='col-xs-4 col-sm-4 col-md-3'>
             <div class='item'>
                 <div class='item-media rounded'>
-                    <a href='artist.detail.php?id=$artist_id' class='item-media-content'
-                       style='background-image: url(\"$image_path\")'></a>
-                </div>
+                    <a href='artist.detail.php?id=" . $artist_id . "' class='item-media-content' style='background-image: url(\"" . htmlspecialchars($image_path) . "\")'></a>                </div>
                 <div class='item-info text-center'>
                     <div class='item-title text-ellipsis'>
                         <a href='artist.detail.php?id=$artist_id'>$artist_name</a>

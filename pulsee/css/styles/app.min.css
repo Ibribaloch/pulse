@@ -8346,7 +8346,6 @@ div.mejs-speed-button {
 }
 .mejs-controls .mejs-playpause-button button {
   border: 0;
-  background-color: #02b875;
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
   border-radius: 100%;
