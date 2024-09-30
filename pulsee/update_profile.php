@@ -2,7 +2,7 @@
 include('config.php'); // Include your database configuration
 
 // Start the session to access the logged-in user's ID
-
+session_start();
 $user_id = $_SESSION['user_id']; // Assuming the user ID is stored in the session
 
 // Check if the form is submitted
