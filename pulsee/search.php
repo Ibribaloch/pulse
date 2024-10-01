@@ -139,9 +139,10 @@
                         // Close the result set
                         $result->close();
 
-                    } else {
-                        // If no search has been made, show the recommended section
-                        include('recommand.php');
+                    } else {;?>
+                        <div class="row item-list item-list-md m-b">
+                            <?php include 'recommand.php' ?>
+                    </div><?php 
                     }
                     ?>
                 </div>

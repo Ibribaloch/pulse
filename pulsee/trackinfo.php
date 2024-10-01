@@ -37,6 +37,9 @@ if (isset($_GET['song_id'])) {
 } else {
     die("Error: song_id not found in URL.");
 }
+
+// Close the database connection
+$conn->close();
 ?>
     <div class="row-col">
         <div class="col-sm w w-auto-xs m-b">
@@ -69,7 +72,7 @@ if (isset($_GET['song_id'])) {
                     </button>
 
                     <span class="text-muted"><?php echo $song['views']; ?></span>
-                    <a class="btn btn-icon rounded btn-favorite">
+                    <a class="btn btn-icon rounded btn-favorite" onclick="likeSong(<?php echo $song_id; ?>)">
                         <i class="fa fa-heart-o"></i>
                     </a>
                     <span class="text-muted"><?php echo $song['likes']; ?></span>
@@ -86,3 +89,33 @@ if (isset($_GET['song_id'])) {
             </div>
         </div>
     </div>
+    <script>
+function likeSong(songId) {
+    // Replace with your user ID (could be dynamically set based on the logged-in user)
+    const userId = <?php echo $user_id; ?>;
+
+    // Make an AJAX request to your backend
+    fetch('fnlike.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            user_id: userId,
+            song_id: songId,
+            liked_at: new Date().toISOString() // Store the current timestamp
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Song liked successfully');
+        } else {
+            alert('Failed to like the song: ' + data.message);
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+</script>
