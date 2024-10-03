@@ -1,12 +1,11 @@
 <?php
-include('config.php'); // Include your database connection
-include('usercheck.php'); // Include user authentication to get $user_id
+include('config.php'); 
+include('usercheck.php'); 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment_id = $_POST['comment_id'] ?? '';
 
     if (!empty($comment_id) && isset($user_id)) {
-        // First, check if the comment belongs to the user
         $stmt = $conn->prepare("SELECT user_id FROM comments WHERE comment_id = ?");
         $stmt->bind_param("i", $comment_id);
         $stmt->execute();
@@ -14,11 +13,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comment = $result->fetch_assoc();
 
         if ($comment && $comment['user_id'] == $user_id) {
-            // Delete the comment
             $delete_stmt = $conn->prepare("DELETE FROM comments WHERE comment_id = ?");
             $delete_stmt->bind_param("i", $comment_id);
             if ($delete_stmt->execute()) {
-                header("Location: track.detail.php?song_id=" . $comment['song_id']); // Redirect back
+                header("Location: track.detail.php?song_id=" . $comment['song_id']);
                 exit();
             }
             $delete_stmt->close();
@@ -28,5 +26,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 }
-$conn->close(); // Close connection here
+$conn->close();
 ?>

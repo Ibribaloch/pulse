@@ -2,13 +2,11 @@
 session_start();
 include('config.php');
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: signin.php");
     exit();
 }
 
-// Fetch user info
 $user_id = $_SESSION['user_id'];
 $sql = "SELECT name, profile_pic FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);

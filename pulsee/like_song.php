@@ -1,15 +1,13 @@
 <?php
-include('config.php'); // Include your database connection file
+include('config.php'); 
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo 'User not logged in.';
     exit();
 }
 
-$user_id = $_SESSION['user_id']; // Get the logged-in user ID
+$user_id = $_SESSION['user_id']; 
 
-// Fetch liked songs for the logged-in user (limit to 5)
 $stmt = $conn->prepare("
     SELECT songs.song_id, songs.song_name, songs.image_path
     FROM liked_songs
@@ -17,14 +15,13 @@ $stmt = $conn->prepare("
     WHERE liked_songs.user_id = ?
     LIMIT 5
 ");
-$stmt->bind_param("i", $user_id); // Bind the parameter
+$stmt->bind_param("i", $user_id); 
 $stmt->execute();
 $result = $stmt->get_result();
 $liked_songs = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 ?>
 
-<!-- Your existing section -->
 <div class="row">
     <?php foreach ($liked_songs as $song): ?>
         <div class="col-xs-12">
@@ -48,7 +45,6 @@ $stmt->close();
     <?php endforeach; ?>
 </div>
 
-<!-- Message if no liked songs found -->
 <?php if (empty($liked_songs)): ?>
     <p>No liked songs found for this user.</p>
 <?php endif; ?>

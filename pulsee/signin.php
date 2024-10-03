@@ -6,7 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Check if the user exists 
     $sql = "SELECT id, name, profile_pic, password FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -32,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $stmt->close();
 }
-// Fetch website settings
 $sql = "SELECT * FROM website_settings";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {

@@ -1,7 +1,7 @@
 <?php
-include('config.php'); // Include your database configuration file
+include('config.php'); 
 
-$song_id = $_GET['song_id']; // Get the song ID from the URL or however you're passing it
+$song_id = $_GET['song_id']; 
 
 $sql = "SELECT c.comment, c.created_at, u.name AS username, u.profile_pic 
         FROM comments c 
@@ -14,9 +14,9 @@ if ($stmt = $conn->prepare($sql)) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    $comments = []; // Initialize an array to hold comments
+    $comments = []; 
     while ($row = $result->fetch_assoc()) {
-        $comments[] = $row; // Append each comment row to the comments array
+        $comments[] = $row; 
     }
 
     $stmt->close();

@@ -1,36 +1,29 @@
 <?php
-// Include the database configuration
 include('config.php'); 
 
-// Ensure connection is still valid
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Get the artist ID from the URL
 $artist_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Prepare the SQL statement for artist details
 $stmt = $conn->prepare("SELECT artist_id, artist_name, image_path, description FROM artists WHERE artist_id = ?");
 $stmt->bind_param("i", $artist_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$artist = $result->fetch_assoc(); // Fetch artist details
+$artist = $result->fetch_assoc(); 
 
-// Prepare the SQL statement for albums
 $albumStmt = $conn->prepare("SELECT album_id, album_name FROM albums WHERE artist_id = ?");
 $albumStmt->bind_param("i", $artist_id);
 $albumStmt->execute();
 $albumResult = $albumStmt->get_result();
 
-// Prepare the SQL statement for tracks
 $trackStmt = $conn->prepare("SELECT song_name FROM songs WHERE artist_id = ?");
 $trackStmt->bind_param("i", $artist_id);
 $trackStmt->execute();
 $trackResult = $trackStmt->get_result();
 
-// Close statements and connection
 $stmt->close();
 $albumStmt->close();
 $trackStmt->close();
@@ -66,7 +59,7 @@ $conn->close();
                                 </div>
                                 <div class="block clearfix m-b">
                                     <?php while ($album = $albumResult->fetch_assoc()): ?>
-                                        <a class="btn btn-xs rounded white" href="album.detail.php?id=<?php echo $album['album_id']; ?>">
+                                        <a class="btn btn-xs rounded white" href="search.php?query=<?php echo urlencode($album['album_name']); ?>">
                                             <?php echo htmlspecialchars($album['album_name']); ?>
                                         </a>
                                     <?php endwhile; ?>

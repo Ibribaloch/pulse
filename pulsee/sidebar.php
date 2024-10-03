@@ -1,11 +1,9 @@
 <?php 
 include('config.php');
 
-// Check if user is logged in
 if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
-    // Fetch user info from the database
     $sql = "SELECT name, profile_pic FROM users WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
@@ -27,7 +25,6 @@ if (isset($_SESSION['user_id'])) {
     $user_profile_pic = 'images/default_profile_pic.jpg';
 }
 
-// Fetch website settings
 $sql = "SELECT * FROM website_settings";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {

@@ -1,8 +1,6 @@
 <?php
-// Include your database connection
-include 'config.php'; // Make sure this is correct
+include 'config.php'; 
 
-// SQL query to fetch the top 10 most viewed songs along with like counts
 $query = "
     SELECT songs.song_name, artists.artist_name, songs.image_path, songs.views, COUNT(liked_songs.song_id) AS like_count
     FROM songs
@@ -10,19 +8,16 @@ $query = "
     LEFT JOIN liked_songs ON songs.song_id = liked_songs.song_id
     GROUP BY songs.song_id
     ORDER BY songs.views DESC
-    LIMIT 10"; // Fetch top 10 most viewed songs
+    LIMIT 10"; 
 
-// Execute the query
 $result = mysqli_query($conn, $query);
 
-// Store the songs in an array
 $songs = array();
 while ($row = mysqli_fetch_assoc($result)) {
     $songs[] = $row;
 }
 ?>
 
-<!-- HTML Structure with PHP to dynamically generate content -->
 <?php foreach ($songs as $index => $song) { ?>
 <div class="col-xs-12">
     <div class="item r" data-id="item-<?php echo rand(1, 100); ?>" 
@@ -47,7 +42,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             </div>
             <div class="item-title text-ellipsis">
                 <a href="track.detail.html">
-                    <?php if ($index == 0) { // Highlight the song with the most views ?>
+                    <?php if ($index == 0) {  ?>
                         <strong><?php echo $song['song_name']; ?> (Treanding #1)</strong>
                     <?php } else { ?>
                         <?php echo $song['song_name']; ?>

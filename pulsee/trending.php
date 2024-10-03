@@ -1,7 +1,6 @@
 <?php
 include 'config.php';
 
-// Fetch the top 9 songs based on the number of views
 $query = "
     SELECT s.song_id, s.song_name, s.image_path, s.artist_id, COUNT(v.song_id) as views 
     FROM songs s

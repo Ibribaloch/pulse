@@ -1,16 +1,12 @@
 <?php
-// Include database configuration
 include('config.php'); 
 
-// Ensure connection is still valid
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Get the artist ID from the URL
 $artist_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Prepare the SQL statement for top songs based on views
 $topSongsQuery = "
     SELECT song_id, song_name, image_path, audio_path, views, likes 
     FROM songs 
@@ -23,7 +19,6 @@ $topSongsStmt->bind_param("i", $artist_id);
 $topSongsStmt->execute();
 $topSongsResult = $topSongsStmt->get_result();
 
-// Close the statement
 $topSongsStmt->close();
 $conn->close();
 ?>

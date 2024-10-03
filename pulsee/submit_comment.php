@@ -4,15 +4,12 @@ $username = "root";
 $password = "";
 $dbname = "pulse";
 
-// Create a new connection
 $con = mysqli_connect($servername, $username, $password, $dbname);
 
-// Check connection
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 session_start();
-// Get the user ID from the session
 $user_id = $_SESSION['user_id'];
 
 ini_set('display_errors', 1);
@@ -44,6 +41,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Close the connection at the end of the script
 $conn->close();
 ?>

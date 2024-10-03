@@ -1,21 +1,17 @@
 <?php
-// Include database configuration
 include('config.php');
 
-// Ensure connection is still valid
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Get the artist ID from the URL
 $artist_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Prepare the SQL statement for fetching songs
 $songsQuery = "
     SELECT song_id, song_name, image_path, views, likes, audio_path 
     FROM songs 
     WHERE artist_id = ? 
-    ORDER BY views DESC";  // Optional: sort by views
+    ORDER BY views DESC";  
 
 $songsStmt = $conn->prepare($songsQuery);
 $songsStmt->bind_param("i", $artist_id);
@@ -65,6 +61,5 @@ $songsResult = $songsStmt->get_result();
 </div>
 
 <?php
-// Close the statement
 $songsStmt->close();
 ?>

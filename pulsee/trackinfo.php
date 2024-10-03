@@ -1,44 +1,33 @@
 <?php
-include('config.php'); // Include your database configuration
+include('config.php'); 
 
-// Get the song_id from the URL
 if (isset($_GET['song_id'])) {
     $song_id = $_GET['song_id'];
 
-    // Modify the SQL query to include the artist's name by joining the artists table
     $sql = "SELECT s.song_name, s.image_path, s.audio_path, s.views, s.likes, g.genre_name, a.artist_name
             FROM songs s
             LEFT JOIN genres g ON s.genre_id = g.genre_id
             LEFT JOIN artists a ON s.artist_id = a.artist_id
             WHERE s.song_id = ?";
 
-    // Prepare the SQL statement
     if ($stmt = $conn->prepare($sql)) {
-        // Bind the song_id to the query
         $stmt->bind_param("i", $song_id);
-        // Execute the query
         $stmt->execute();
-        // Fetch the result
         $result = $stmt->get_result();
 
-        // Check if the song exists
         if ($result->num_rows > 0) {
-            // Fetch the song details along with artist's name
             $song = $result->fetch_assoc();
         } else {
             die("Song not found.");
         }
-        // Close the statement
         $stmt->close();
     } else {
-        // Output the error if the statement fails to prepare
         die("Error preparing statement: " . $conn->error);
     }
 } else {
     die("Error: song_id not found in URL.");
 }
 
-// Close the database connection
 $conn->close();
 ?>
     <div class="row-col">
@@ -84,17 +73,17 @@ $conn->close();
                     </div>
                 </div>
                 <div class="item-meta">
-                    <a class="btn btn-xs rounded white"><?php echo htmlspecialchars($song['genre_name']); ?></a>
+                    <a class="btn btn-xs rounded white" href="search.php?query=<?php echo urlencode($song['genre_name']); ?>">
+                        <?php echo htmlspecialchars($song['genre_name']); ?>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
     <script>
 function likeSong(songId) {
-    // Replace with your user ID (could be dynamically set based on the logged-in user)
     const userId = <?php echo $user_id; ?>;
 
-    // Make an AJAX request to your backend
     fetch('fnlike.php', {
         method: 'POST',
         headers: {
@@ -103,7 +92,7 @@ function likeSong(songId) {
         body: JSON.stringify({
             user_id: userId,
             song_id: songId,
-            liked_at: new Date().toISOString() // Store the current timestamp
+            liked_at: new Date().toISOString() 
         })
     })
     .then(response => response.json())

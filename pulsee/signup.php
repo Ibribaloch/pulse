@@ -1,16 +1,13 @@
 <?php
  include 'config.php';
-// Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); // Hash the password
+    $password = password_hash($_POST['password'], PASSWORD_BCRYPT); 
 
-    // Prepare and bind
     $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
     $stmt->bind_param("sss", $username, $email, $password);
 
-    // Execute the query
     if ($stmt->execute()) {
         header('Location: signin.php');
     } else {
@@ -19,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
 }
-// Fetch website settings
 $sql = "SELECT * FROM website_settings";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {

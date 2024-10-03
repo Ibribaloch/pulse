@@ -14,7 +14,6 @@
             </div>
             <div class="app-body" id="view">
                 <div class="padding">
-                    <!-- Search Form -->
                     <form action="" method="GET" class="m-b-md">
                         <div class="input-group input-group-lg">
                             <input type="text" class="form-control" name="query" 
@@ -25,26 +24,20 @@
                         </div>
                     </form>
                     
-                    <!-- Search Results Heading -->
                     <?php
                     if (isset($_GET['query']) && !empty($_GET['query'])) {
                         $search = $_GET['query'];
                         echo '<p class="m-b-md"><strong>Search Results for: </strong>' . htmlspecialchars($search) . '</p>';
                         
-                        // Include the config file to establish the connection
                         include('config.php');
 
-                        // Ensure connection is still valid before running the query
                         if (!$conn || $conn->connect_error) {
                             die("Connection failed: " . $conn->connect_error);
                         }
 
-                        // Pagination variables
-                        $limit = 10; // Number of results per page
-                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Current page number
-                        $offset = ($page - 1) * $limit; // Calculate the offset for the query
-
-                        // Count total results for pagination
+                        $limit = 10; 
+                        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                        $offset = ($page - 1) * $limit; 
                         $countQuery = "
                             SELECT COUNT(*) as total 
                             FROM songs
@@ -61,7 +54,6 @@
                         $totalResults = $countResult->fetch_assoc()['total'];
                         $totalPages = ceil($totalResults / $limit);
 
-                        // SQL query to fetch the results with LIMIT and OFFSET
                         $searchQuery = "
                             SELECT songs.song_id, songs.song_name, songs.image_path, songs.audio_path, songs.views, songs.likes, 
                                    artists.artist_name, genres.genre_name, albums.album_name
@@ -76,11 +68,9 @@
                             LIMIT $limit OFFSET $offset
                         ";
 
-                        // Run the query and check for results
                         if ($result = $conn->query($searchQuery)) {
                             if ($result->num_rows > 0) {
                                 echo '<div class="m-y"><div class="row item-list item-list-lg item-list-by m-b">';
-                                // Displaying search results as cards
                                 while ($row = $result->fetch_assoc()) {
                                     echo '<div class="col-xs-12">
                                             <div class="item r" data-id="item-'.$row['song_id'].'"
@@ -114,7 +104,6 @@
                                 }
                                 echo '</div></div>';
 
-                                // Display pagination
                                 echo '<nav aria-label="Page navigation">';
                                 echo '<ul class="pagination">';
                                 for ($i = 1; $i <= $totalPages; $i++) {
@@ -136,7 +125,6 @@
                             echo 'Error executing query: ' . $conn->error;
                         }
 
-                        // Close the result set
                         $result->close();
 
                     } else {;?>

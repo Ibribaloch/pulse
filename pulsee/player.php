@@ -69,23 +69,20 @@ include('usercheck.php');
 	<script src="scripts/app.min.js">
 	</script>
 <script>
-    let audioPlayer = new Audio(); // Create a new Audio object
-    let currentSong = ''; // Keep track of the current song
+    let audioPlayer = new Audio(); 
+    let currentSong = ''; 
 
     function playSong(audioPath, songName, artistName, imagePath) {
-        // If a song is already playing, pause it
         if (currentSong !== audioPath) {
-            audioPlayer.pause(); // Pause the currently playing audio
-            audioPlayer.src = audioPath; // Set the new audio source
-            audioPlayer.play(); // Play the new audio
-            currentSong = audioPath; // Update the current song variable
+            audioPlayer.pause(); 
+            audioPlayer.src = audioPath; 
+            audioPlayer.play();
+            currentSong = audioPath;
 
-            // Update the footer or UI elements with the new song info
             document.querySelector('.mejs-track-title a').innerHTML = songName;
             document.querySelector('.mejs-track-author a').innerHTML = artistName;
             document.querySelector('.mejs-track-artwork').style.backgroundImage = 'url(' + imagePath + ')';
         } else {
-            // If the same song is clicked again, toggle pause
             audioPlayer.paused ? audioPlayer.play() : audioPlayer.pause();
         }
     }

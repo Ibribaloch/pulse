@@ -1,13 +1,11 @@
 <?php
 include('config.php');
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: signin.php"); // Redirect to the login page if not logged in
+    header("Location: signin.php"); 
     exit();
 }
 
-// Fetch user information
 $user_id = $_SESSION['user_id'];
 $sql = "SELECT name, profile_pic FROM users WHERE id = ?";
 $stmt = $conn->prepare($sql);
@@ -25,7 +23,6 @@ if ($result->num_rows > 0) {
 }
 
 $stmt->close();
-// Fetch playlists for the logged-in user
 $sql = "SELECT * FROM playlists WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -37,7 +34,6 @@ $conn->close();
 ?>
     <div class="container">
         <div class="row">
-            <!-- Display existing playlists -->
             <?php if ($playlists): ?>
                 <?php foreach ($playlists as $playlist): ?>
                     <div class="col-xs-4 col-sm-4 col-md-3">
@@ -63,7 +59,6 @@ $conn->close();
             <?php endif; ?>
         </div>
 
-        <!-- Add new playlist button -->
         <div class="col-xs-4 col-sm-4 col-md-3">
             <div class="item r">
                 <div class="item-media">
@@ -75,7 +70,6 @@ $conn->close();
         </div>
     </div>
 
-    <!-- Script to handle adding a new playlist -->
     <script>
         document.getElementById('add-playlist-button').addEventListener('click', function() {
             var playlistName = prompt("Enter playlist name:");
@@ -88,7 +82,7 @@ $conn->close();
                         var response = JSON.parse(xhr.responseText);
                         if (response.success) {
                             alert('Playlist created successfully');
-                            location.reload(); // Reload the page to see the new playlist
+                            location.reload(); 
                         } else {
                             alert(response.message);
                         }

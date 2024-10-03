@@ -1,7 +1,5 @@
 <?php
 include 'config.php';
-
-// Fetch 3 random songs
 $query = "SELECT song_id, song_name, image_path, artist_id, audio_path 
           FROM songs 
           ORDER BY RAND() 

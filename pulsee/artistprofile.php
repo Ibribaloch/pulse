@@ -1,5 +1,4 @@
 <?php
-// Fetch artist details from the database
 $artistQuery = "SELECT artist_id, artist_name, image_path, description, website, facebook_link, twitter_link, google_plus_link FROM artists WHERE artist_id = ?";
 $artistStmt = $conn->prepare($artistQuery);
 $artistStmt->bind_param("i", $artist_id);
@@ -9,7 +8,6 @@ $artistResult = $artistStmt->get_result();
 if ($artistResult->num_rows > 0) {
     $artist = $artistResult->fetch_assoc();
 } else {
-    // Handle the case where no artist was found
 }
 ?>
 <div class="row-col m-b">

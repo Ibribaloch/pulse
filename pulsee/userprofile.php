@@ -1,24 +1,20 @@
 <?php
-include('config.php'); // Include your database configuration
+include('config.php'); 
 
-// Get the user ID from the session
 $user_id = $_SESSION['user_id'];
 
-// Prepare and execute the query to fetch user data
 $query = "SELECT id, name, email, profile_pic, description FROM users WHERE id = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-// Check if a user was found and fetch data
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
 } else {
     die("User not found.");
 }
 
-// Close the statement
 $stmt->close();
 ?>
                                         <form method="POST" action="update_profile.php" enctype="multipart/form-data">

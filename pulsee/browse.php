@@ -39,7 +39,6 @@ include('usercheck.php');
   <script src="scripts\app.min.js"></script>
   <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Function to load songs based on genre
     function loadSongs(genre) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'song.php?genre=' + encodeURIComponent(genre), true);
@@ -51,7 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
         xhr.send();
     }
 
-    // Add event listener to genre dropdown items
     document.querySelectorAll('#genreDropdown .dropdown-item').forEach(function(item) {
         item.addEventListener('click', function(e) {
             e.preventDefault();

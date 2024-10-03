@@ -1,22 +1,20 @@
 <?php
-include('config.php'); // Include your database connection file
+include('config.php'); 
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     echo 'User not logged in.';
     exit();
 }
 
-$user_id = $_SESSION['user_id']; // Get the logged-in user ID
+$user_id = $_SESSION['user_id']; 
 
-// Fetch liked songs for the logged-in user
 $stmt = $conn->prepare("
     SELECT songs.song_id, songs.song_name, songs.image_path
     FROM liked_songs
     JOIN songs ON liked_songs.song_id = songs.song_id
     WHERE liked_songs.user_id = ?
 ");
-$stmt->bind_param("i", $user_id); // Bind the parameter
+$stmt->bind_param("i", $user_id); 
 $stmt->execute();
 $result = $stmt->get_result();
 $liked_songs = $result->fetch_all(MYSQLI_ASSOC);

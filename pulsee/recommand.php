@@ -1,11 +1,8 @@
 <?php
-// Include your database connection
-include 'config.php'; // Ensure this points to your correct config file
+include 'config.php'; 
 
-// Initialize an empty array to avoid undefined variable issues
 $songs = array();
 
-// Update the query to join the songs and artists tables
 $query = "
     SELECT s.song_id, s.song_name, s.image_path, s.artist_id, s.created_at, a.artist_name
     FROM songs s
@@ -14,26 +11,21 @@ $query = "
     LIMIT 8
 ";
 
-// Execute the query
 $result = $conn->query($query);
 
-// Check if the query was successful
 if (!$result) {
     die("Query failed: " . $conn->error);
 }
 
-// Fetch the result and populate the $songs array
 while ($row = $result->fetch_assoc()) {
     $songs[] = $row;
 }
 
-// Close the database connection (optional but recommended)
 $conn->close();
 ?>
 
-<!-- HTML Structure with PHP to dynamically generate content -->
 <div class="row">
-    <?php if (!empty($songs)) { // Check if there are any songs to display ?>
+    <?php if (!empty($songs)) { ?>
         <?php foreach ($songs as $song) { ?>
         <div class="col-sm-6">
             <div class="item r">
